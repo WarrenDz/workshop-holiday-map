@@ -81,7 +81,7 @@ const setSection = (section: string | null) => {
 };
 
 const tracksLayer = new GeoJSONLayer({
-  url: "./data/tracks.geojson",
+  url: "./data/Gull_Track_Segments.geojson",
   renderer: new SimpleRenderer({
     symbol: new SimpleLineSymbol({
       width: 3,
