@@ -99,7 +99,7 @@ const tracksLayer = new GeoJSONLayer({
 const tracks = {};
 tracksLayer.queryFeatures({where: `1=1`, outFields: ["*"]}).then(result => {
   result.features.forEach(feature => {
-    tracks[feature.attributes.id] = feature.attributes["__OBJECTID"];
+    tracks[feature.attributes.id] = feature.attributes["OBJECTID"];
   });
 });
 
