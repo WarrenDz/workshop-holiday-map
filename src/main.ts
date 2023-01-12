@@ -108,7 +108,7 @@ const animation = new LineLayerAnimation({
 });
 
 animation.whenAnimatedLayer().then(animatedLayer => {
-  map.add(animatedLayer);
+  scene.add(animatedLayer);
 });
 
 let currentSectionId: null | string = null;
