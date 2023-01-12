@@ -4,23 +4,26 @@ import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter";
 import LabelClass from "@arcgis/core/layers/support/LabelClass";
 import {SimpleRenderer} from "@arcgis/core/renderers";
 import {SimpleLineSymbol, SimpleMarkerSymbol, TextSymbol} from "@arcgis/core/symbols";
-import MapView from "@arcgis/core/views/MapView";
-import WebMap from "@arcgis/core/WebMap";
+// import MapView from "@arcgis/core/views/MapView";
+// import WebMap from "@arcgis/core/WebMap";
+import WebScene from "@arcgis/core/WebScene";
+// import Map from "@arcgis/core/Map"
+import SceneView from "@arcgis/core/views/SceneView";
 import LineLayerAnimation from "./lib/LineLayerAnimation";
 import esriConfig from "@arcgis/core/config";
 
 // needed to access the webmap
 esriConfig.apiKey = "AAPKd2c9128130334dfd8a91779f555ac729TsXtKUoXAQR3qTlSGaaiRem3SYpUdur0Ph6kQzp_DCheaZM8ZwtjJYOhJDnriX5g";
 
-const map = new WebMap({
+const scene = new WebScene({
   portalItem: {
     id: "b00c96feb3ad444b9b5670d815c0c4c7",
   },
 });
 
-const view = new MapView({
+const view = new SceneView({
   container: "viewDiv",
-  map,
+  map: scene,
   ui: {
     components: [],
   },
@@ -59,7 +62,7 @@ const pois = new GeoJSONLayer({
   ],
 });
 
-map.add(pois);
+scene.add(pois);
 
 const filterFeatures = (filter: string) => {
   pois.featureEffect = new FeatureEffect({
@@ -73,7 +76,7 @@ const filterFeatures = (filter: string) => {
 const setSection = (section: string | null) => {
   if (section) {
     filterFeatures(`id = '${section}'`);
-    const bookmark = map.bookmarks.filter(b => b.name === section).getItemAt(0);
+    const bookmark = scene.presentation.slides.filter(b => b.id === section).getItemAt(0);
     if (bookmark) {
       view.goTo(bookmark.viewpoint, {duration: 1500});
     }
