@@ -4,26 +4,23 @@ import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter";
 import LabelClass from "@arcgis/core/layers/support/LabelClass";
 import {SimpleRenderer} from "@arcgis/core/renderers";
 import {SimpleLineSymbol, SimpleMarkerSymbol, TextSymbol} from "@arcgis/core/symbols";
-// import MapView from "@arcgis/core/views/MapView";
-// import WebMap from "@arcgis/core/WebMap";
-import WebScene from "@arcgis/core/WebScene";
-// import Map from "@arcgis/core/Map"
-import SceneView from "@arcgis/core/views/SceneView";
+import MapView from "@arcgis/core/views/MapView";
+import WebMap from "@arcgis/core/WebMap";
 import LineLayerAnimation from "./lib/LineLayerAnimation";
 import esriConfig from "@arcgis/core/config";
 
 // needed to access the webmap
 esriConfig.apiKey = "AAPKd2c9128130334dfd8a91779f555ac729TsXtKUoXAQR3qTlSGaaiRem3SYpUdur0Ph6kQzp_DCheaZM8ZwtjJYOhJDnriX5g";
 
-const scene = new WebScene({
+const map = new WebMap({
   portalItem: {
-    id: "b00c96feb3ad444b9b5670d815c0c4c7",
+    id: "e1235a5133614a21b312485cd9845fa9",
   },
 });
 
-const view = new SceneView({
+const view = new MapView({
   container: "viewDiv",
-  map: scene,
+  map,
   ui: {
     components: [],
   },
@@ -62,7 +59,7 @@ const pois = new GeoJSONLayer({
   ],
 });
 
-scene.add(pois);
+map.add(pois);
 
 const filterFeatures = (filter: string) => {
   pois.featureEffect = new FeatureEffect({
@@ -76,7 +73,7 @@ const filterFeatures = (filter: string) => {
 const setSection = (section: string | null) => {
   if (section) {
     filterFeatures(`id = '${section}'`);
-    const bookmark = scene.presentation.slides.filter(b => b.id === section).getItemAt(0);
+    const bookmark = map.bookmarks.filter(b => b.name === section).getItemAt(0);
     if (bookmark) {
       view.goTo(bookmark.viewpoint, {duration: 1500});
     }
@@ -108,7 +105,7 @@ const animation = new LineLayerAnimation({
 });
 
 animation.whenAnimatedLayer().then(animatedLayer => {
-  scene.add(animatedLayer);
+  map.add(animatedLayer);
 });
 
 let currentSectionId: null | string = null;
