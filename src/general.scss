@@ -1,5 +1,5 @@
 @import "@arcgis/core/assets/esri/themes/light/main.css";
-@import url("https://fonts.googleapis.com/css2?family=Caveat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap");
 
 html,
 body {
@@ -10,14 +10,34 @@ body {
   font-family: "Avenir Next", sans-serif;
   color: #271b0f;
 }
+#viewDiv {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
 
+#locatorDiv {
+  pointer-events: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+.locator {
+width: 200px;
+height: 200px;
+background-color: #271b0f;
+}
 .full-cover-container {
   height: 100vh;
   text-align: center;
   // background: url(../assets/griffith-observatory.jpg) no-repeat center center fixed;
   // -webkit-background-size: cover;
-  // -moz-background-size: cover;
-  // -o-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -26,30 +46,28 @@ body {
 }
 
 .full-cover-container heading {
-  width: min(800px, 80%);
-  border-radius: 20px;
-  background-color: rgba(255, 255, 255, 0.6);
+  width: 100vh;
+  background-color: rgba(255, 255, 255, 1);
   padding: 20px;
 }
 
-h1 > img {
-  max-height: 100px;
-  vertical-align: middle;
-}
+// h1 > img {
+//   max-height: 100px;
+//   vertical-align: middle;
+// }
 
-.full-cover-container > img {
-  max-width: 80%;
-  max-height: none;
-}
+// .full-cover-container > img {
+//   max-width: 80%;
+//   max-height: none;
+// }
 
 .full-cover-container h1 {
   font-size: 3rem;
-  font-family: "Caveat", cursive;
+  font-family: "DM Serif";
 }
 
 .map-panel {
-  height: 30vh;
-  padding-top: 10px;
+  height: 100vh;
   background-color: white;
   position: sticky;
   bottom: 0;
@@ -93,9 +111,20 @@ img {
 }
 
 section {
-  padding: 0 40px;
-  margin: 20px auto;
-  box-sizing: border-box;
+  // padding: 0 40px;
+  margin: 100px;
+  // box-sizing: border-box;
+  // position: sticky;
+  // position: -webkit-sticky;
+  top: 100px;
+  left: 20px;
+  width: 500px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5), 0 5px 25px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #2b2b2b;
+  padding: 10px;
+  font-size: 20px;
+  text-align: left;
 }
 
 h2 {

@@ -2,6 +2,8 @@ import GeoJSONLayer from "@arcgis/core/layers/GeoJSONLayer";
 import FeatureEffect from "@arcgis/core/layers/support/FeatureEffect";
 import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter";
 import LabelClass from "@arcgis/core/layers/support/LabelClass";
+import reactiveUtils from "@arcgis/core/core/reactiveUtils";
+import promiseUtils from "@arcgis/core/core/promiseUtils";
 import {SimpleRenderer} from "@arcgis/core/renderers";
 import {SimpleLineSymbol, SimpleMarkerSymbol, TextSymbol} from "@arcgis/core/symbols";
 import MapView from "@arcgis/core/views/MapView";
@@ -10,7 +12,7 @@ import LineLayerAnimation from "./lib/LineLayerAnimation";
 import esriConfig from "@arcgis/core/config";
 
 // needed to access the webmap
-esriConfig.apiKey = "AAPKd2c9128130334dfd8a91779f555ac729TsXtKUoXAQR3qTlSGaaiRem3SYpUdur0Ph6kQzp_DCheaZM8ZwtjJYOhJDnriX5g";
+esriConfig.apiKey = "AAPKefc72b9a3df14a54a661d060aedf2ecdnOz9VfXeewb4Clxai6KbJwzrpTDZ-9U_FesGtQb3YmgKPbmd5epaIIV2Z8-hnCyk";
 
 const map = new WebMap({
   portalItem: {
@@ -30,16 +32,17 @@ const view = new MapView({
   },
 });
 
+
 const pois = new GeoJSONLayer({
   url: "./data/points.geojson",
   renderer: new SimpleRenderer({
     symbol: new SimpleMarkerSymbol({
-      color: [255, 165, 0, 1],
+      color: [0, 128, 100, 1],
       size: 8,
       style: "circle",
       outline: {
         width: 8,
-        color: [255, 165, 0, 0.3],
+        color: [0, 128, 100, 1],
       },
     }),
   }),
@@ -48,7 +51,7 @@ const pois = new GeoJSONLayer({
       labelExpressionInfo: {expression: "$feature.name"},
       labelPlacement: "center-right",
       symbol: new TextSymbol({
-        color: [255, 165, 0, 1],
+        color: [0, 128, 100, 1],
         haloSize: 2,
         haloColor: [255, 255, 255, 1],
         font: {
@@ -61,18 +64,20 @@ const pois = new GeoJSONLayer({
 
 map.add(pois);
 
-const filterFeatures = (filter: string) => {
-  pois.featureEffect = new FeatureEffect({
-    filter: new FeatureFilter({
-      where: filter,
-    }),
-    excludedEffect: "grayscale(100%) opacity(30%)",
-  });
-};
+// This block creates a set of filtered features (based on point pois) that show relevant points for each bookmark
+// this logic could be used to turn on other relevant data layers as the map scrolls into view ex. breeding areas etc.
+// const filterFeatures = (filter: string) => {
+//   pois.featureEffect = new FeatureEffect({
+//     filter: new FeatureFilter({
+//       where: filter,
+//     }),
+//     excludedEffect: "grayscale(100%) opacity(30%)",
+//   });
+// };
 
 const setSection = (section: string | null) => {
   if (section) {
-    filterFeatures(`id = '${section}'`);
+    // filterFeatures(`id = '${section}'`);  // Since I'm just animating a simple line no other dynamic pois are required here when the section changes
     const bookmark = map.bookmarks.filter(b => b.name === section).getItemAt(0);
     if (bookmark) {
       view.goTo(bookmark.viewpoint, {duration: 1500});
@@ -84,8 +89,8 @@ const tracksLayer = new GeoJSONLayer({
   url: "./data/Gull_Track_Segments.geojson",
   renderer: new SimpleRenderer({
     symbol: new SimpleLineSymbol({
-      width: 3,
-      color: [252, 169, 3],
+      width: 2,
+      color: [0, 128, 100, 1],
       style: "solid",
       cap: "round",
       join: "round",
